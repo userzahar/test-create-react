@@ -1,3 +1,7 @@
-export const Header = ({ className, id }) => {
-    return <p id={id} className={className}>I am Header</p>
+export const Header = ({ className, id, children }) => {
+    return <>
+        {children}
+        <p id={id} className={className}>I am Header</p>
+    </>
+
 }

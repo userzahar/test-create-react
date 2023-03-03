@@ -9,4 +9,4 @@ const root = document.getElementById('root');
 // const div2 = <div id='test' name='main' className='test-class'>{p}</div>;
 
 
-ReactDOM.createRoot(root).render(<Card />);
+ReactDOM.createRoot(root).render(<Card isOnline />);
