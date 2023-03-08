@@ -19,9 +19,13 @@
 import { Header } from './Header';
 import data from '../data.json';
 import css from '../css/Card.module.css';
+import clsx from 'clsx';
 export const Card = ({ isOnline }) => {
     return data.map((photo) => {
-        return (<div key={photo.id} className={isOnline ? css.div : css.div2}>
+        return (<div key={photo.id} className={clsx(
+            [css.div]: isOnline,
+            [css.div2]: !isOnline,
+        )}>
             <img src={photo.url} className={css.img} alt={photo.title} />
             <div>
                 <h5>{photo.title}</h5>
