@@ -1,6 +1,7 @@
 import { Component } from "react";
+import { Button } from "../Button/Button";
 
-class Form extends Component {
+export class Form extends Component {
     state = {
         name: '',
         email: '',
@@ -8,6 +9,13 @@ class Form extends Component {
     }
     handleChange = ({ target: { value, name } }) => {
         this.setState({ [name]: value });
+    }
+    handleSubmit = e => {
+        e.preventDefault();
+        const newUser = {
+            ...this.state
+        };
+        this.props.addUser(newUser);
     }
     render() {
         const { name, email, avatar } = this.state;
@@ -21,7 +29,7 @@ class Form extends Component {
             <label>Avatar
                 <input name="avatar" type="url" value={avatar} onChange={this.handleChange} />
             </label>
-            <button>Save</button>
+            <Button text='Save' clickHeandler={this.handleSubmit} />
         </form>
     }
 }
