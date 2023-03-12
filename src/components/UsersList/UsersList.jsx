@@ -1,13 +1,13 @@
-
+import { StyledUserList, StyledButton } from "../css/UserListStyled"
 export function UserList({ users, deleteUser }) {
-    return <ul>
+    return <StyledUserList>
         {users.map(({ id, name, email, avatar, hasJob }) => {
             return <li key={id}>
                 <p>Name: {name}</p>
                 <p>Email: {email}</p>
                 <p>Has Job: {hasJob.toString()}</p>
-                <button onClick={() => deleteUser(id)}>Delete</button>
+                <StyledButton onClick={() => deleteUser(id)}>Delete</StyledButton>
             </li>
         })}
-    </ul>
+    </StyledUserList>
 }

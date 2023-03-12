@@ -4,6 +4,7 @@ import { data } from "./data";
 import { Form } from './Form/Form';
 import { UserList } from "./UsersList/UsersList";
 import { nanoid } from "nanoid";
+
 export class App extends Component {
     state = {
         users: data,
