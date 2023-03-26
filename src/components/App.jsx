@@ -1,42 +1,65 @@
 import { Component } from "react";
+import { fetchMovies } from "../services/movesAPI";
 import { Button } from "./Button/Button";
-import { data } from "./data";
-import { Form } from './Form/Form';
-import { UserList } from "./UsersList/UsersList";
-import { nanoid } from "nanoid";
+import { MovieList } from "./MovieList/MovieList";
 
 export class App extends Component {
     state = {
-        users: data,
-        isFormShown: false,
+        isListShown: false,
+        movies: [],
+        page: 1,
+        isLoading: false,
     }
-    deleteUser = (id) => {
-        this.setState((prevState) => {
-            return {
-                users: prevState.users.filter(user => user.id !== id)
-            }
-        });
+    componentDidUpdate(_,prevState) {
+        const { isListShown, page } = this.state;
+        if ((prevState.page !== page || prevState.isListShown !== isListShown) && isListShown) {
+            this.getMovies();
+        };
+        if (prevState.isListShown !== isListShown && !isListShown) {
+            this.setState({
+                movies:[],
+                page:1,
+            })
+        };
     }
-    openForm = () => {
-        this.setState({ isFormShown: true })
+    getMovies = () => {
+        const { page } = this.state;
+        this.setState({ isLoading: true })
+        fetchMovies(page).then(res => {
+            console.log(res)
+            this.setState(prev => {
+                return { movies: [...prev.movies, ...res.data.results] }
+            })
+        })
+            .catch(error => console.log(error))
+            .finally(() => this.setState({ isLoading: false }));
     }
-    closeForm = () => {
-        this.setState({ isFormShown: false })
+    heandleButton = () => {
+        this.setState((prev) => {
+            return {isListShown: !prev.isListShown}
+        })
     }
-    addUser = user => {
-        const newUser = {
-            ...user,
-            hasJob: false,
-            id: nanoid(),
-        }
-        this.setState(prevState => ({ users: [...prevState.users, newUser] }))
+    loadMore = () => {
+        const { page } = this.state;
+        this.setState(prev => {
+            return { page:prev.page+1 }
+        })
     }
+
     render() {
-        const { users, isFormShown } = this.state;
+        const { isListShown,movies } = this.state;
         return (<div>
-            <UserList users={users} deleteUser={this.deleteUser} />
-            {isFormShown ? (
-                <Form addUser={this.addUser} closeForm={this.closeForm} />) : (<Button text="Add User" clickHeandler={this.openForm} />)}
+            <Button
+                textContent={isListShown ? "Hide move list" : "Show moves list"}
+                heandleButton={this.heandleButton}
+            />
+            {isListShown &&
+                <>
+                    <MovieList data={movies} />
+                <Button textContent="Load More" heandleButton={this.loadMore} />
+                </>
+            }
+            
         </div>)
     }
 }

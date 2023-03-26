@@ -1,5 +1,4 @@
 
-export function Button({ text, clickHeandler }) {
-
-    return <button onClick={clickHeandler}>{text}</button>
+export function Button({textContent,heandleButton}) {
+    return <button type="button" onClick={heandleButton}>{textContent}</button>
 }
